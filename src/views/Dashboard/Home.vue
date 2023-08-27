@@ -1,7 +1,7 @@
 <script setup>
-import AllData from '@/Components/AllData.vue'
-import ProvisorList from'@/Components/ProvisorList.vue'
-import BarChart from '@/Components/ChartBar.vue';
+import AllData from '@/components/AllData.vue'
+import ProvisorList from'@/components/ProvisorList.vue'
+import BarChart from '@/components/ChartBar.vue';
 
 </script>
 
