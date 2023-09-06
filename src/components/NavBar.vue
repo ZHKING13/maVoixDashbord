@@ -1,9 +1,11 @@
+
+
 <template>
   <div class="flex justify-between  items-center  w-full">
     <!-- user Name -->
     <div class="ml-6 m-2">
       <h1 class="text-sm">Hello Monsieur,</h1>
-      <h2>yacou</h2>
+      <h2>{{ data.nom + " " + data.prenom }} </h2>
     </div>
 
     <!-- searchbar -->
@@ -24,7 +26,7 @@
       </svg>
 
       <div class="h-6 w-6 ml-4 rounded-full flex items-center justify-center bg-green-800">
-        <img class="h-full w-full rounded-full" src="../assets/user.jpg" alt="user">
+        <img class="h-full w-full rounded-full" src="{{ data.photo_url }}" />
       </div>
       <div @click="logout" class="p-1 bg-red-500 text-white rounded-full ml-4 cursor-pointer ">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ">
@@ -43,13 +45,15 @@ import {useRouter} from 'vue-router'
 import {ref,onMounted} from 'vue'
 const store = useAuthStore();
 const route = useRouter();
+let user = ref('');
 
+const data = JSON.stringify(localStorage.getItem('user'));
 function userInfo(){
-  store.userInfo = localStorage.getItem('userInfo');
-  console.log(JSON.stringify(store.userInfo));
+  user = data;
 }
 function logout(){
   localStorage.removeItem('userToken');
+  localStorage.removeItem("userInfo");
   route.push('/');
 }
 

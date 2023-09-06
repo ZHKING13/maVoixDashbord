@@ -8,9 +8,9 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   getters:{
-      // getUserInfo(){
-      //     return this.userInfo;
-      // }
+      getUserInfo(){
+         return this.userInfo;
+      }
   },
   actions: {
     setUserToken(token) {
@@ -28,12 +28,17 @@ export const useAuthStore = defineStore('auth', {
     async login(credentials) {
       try {
         const response = await axios.post('https://lesinnovateurs.me/api/auth/login', credentials);
+        console.log(response);
         const userToken = response.data.Authorization.token;
-        const allInfo = response.data.user;
-        this.setUserToken(userToken);
-        this.setUserInfo(allInfo);
-        return true; // Login successful
+        if (response.data.user.role_id === 1) {
+          const allInfo = response.data.user;
+          this.setUserToken(userToken);
+          this.setUserInfo(allInfo);
+          return true; // Login successful
+        }
+        return false; // Login failed
       } catch (error) {
+        console.log(error)
         console.error('Login failed:', error);
         return false; // Login failed
       }

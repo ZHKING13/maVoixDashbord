@@ -11,6 +11,7 @@ const email = ref('');
 const password = ref('');
 const showPassword = ref(false);
 const type = ref('password') ;
+const errorMessage = ref('') ;
 function setPasswordShow(){
   showPassword.value = !showPassword.value;
     if (showPassword.value) {
@@ -31,12 +32,18 @@ const login = async () => {
 
   const loginSuccessful = await authStore.login(credentials);
 
-  if (loginSuccessful) {
+   if (loginSuccessful) {
     console.log('Login successful');
     console.log(authStore.userToken);
+    localStorage.setItem('user', authStore.userInfo);
     router.push('/home');
   } else {
+    errorMessage.value = 'Identifiants incorrects. Veuillez réessayer.';
     console.log('Login failed');
+
+    setTimeout(() => {
+      errorMessage.value = '';
+    }, 5000);
   }
   isLoading.value = false;
 }
@@ -51,7 +58,21 @@ const login = async () => {
       <span class="text-red-500"> {{ message }} </span>
   </div>
 
+
   <form @submit.prevent="login()"  class="mx-auto mb-0 mt-8 max-w-md space-y-4">
+
+    <div class="flex items-center justify-between">
+      <span class="border-b w-1/5 lg:w-1/4"></span>
+
+      <a href="#" class="text-xs text-center text-gray-500 uppercase">Connexion</a>
+
+      <span class="border-b w-1/5 lg:w-1/4"></span>
+
+    </div>
+    <div v-if="errorMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mt-4">
+      <p>{{ errorMessage }}</p>
+    </div>
+
     <div>
       <label for="email" class="sr-only">Email</label>
 
@@ -124,7 +145,7 @@ const login = async () => {
 
     <div class="flex items-center justify-between">
       <p class="text-sm text-gray-500">
-        <a class="underline" href="">Mot de passe oublié</a>
+        <a class="underline" href="#">Mot de passe oublié</a>
       </p>
 
       <button
